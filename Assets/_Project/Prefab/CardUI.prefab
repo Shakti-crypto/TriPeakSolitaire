@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 175, y: 254.1}
+  m_SizeDelta: {x: 140, y: 203.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5869152777209857299
 CanvasRenderer:
@@ -91,7 +91,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardSpriteUI: {fileID: 8170443797816617978}
-  button: {fileID: 0}
+  cardRect: {fileID: 6156076811810587987}
+  button: {fileID: 2945983336591505953}
 --- !u!114 &2945983336591505953
 MonoBehaviour:
   m_ObjectHideFlags: 0

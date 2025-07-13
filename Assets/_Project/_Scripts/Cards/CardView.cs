@@ -6,13 +6,14 @@ namespace TriPeakSolitaire.Cards
 
     public class CardView : MonoBehaviour
     {
-        [SerializeField] private Image cardSpriteUI;
+        [SerializeField] private SpriteRenderer cardSprite;
+        public Transform cardRect;
         [SerializeField] private Button button;
 
         public void SetupSprite(Sprite sprite, bool faceUp)
         {
-            if (faceUp) cardSpriteUI.sprite = sprite;
-            else cardSpriteUI.sprite = GameAssetsContainer.Instance.cardBackSprite;
+            if (faceUp) cardSprite.sprite = sprite;
+            else cardSprite.sprite = GameAssetsContainer.Instance.cardBackSprite;
         }
 
         public void SetInteractable(bool interactable)
@@ -25,6 +26,20 @@ namespace TriPeakSolitaire.Cards
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(onButtonClick);
         }
+
+        public void SetCardPosition(Vector3 position)
+        {
+            cardRect.position = position;
+        }
+
+        public float GetSpriteWidth()
+        {
+            float spriteWidthInUnits = cardSprite.sprite.bounds.size.x;
+            float worldWidth = spriteWidthInUnits * transform.localScale.x;
+            return worldWidth;
+        }
+
+
 
     }
 }
