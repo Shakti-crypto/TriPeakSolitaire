@@ -291,8 +291,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 426e4540460b49642af0c8440a4a419a, type: 2}
   cardPrefab: {fileID: 9118608784365265078, guid: ac367f7578100174980743455fde98bf, type: 3}
   cardSpawnParent: {fileID: 1791595646}
-  pyramidBuilder: {fileID: 2102011203}
-  cardsRequiredForPyramid: 28
 --- !u!4 &420824039
 Transform:
   m_ObjectHideFlags: 0
@@ -306,7 +304,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 589442171}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &479581725
 GameObject:
@@ -550,8 +548,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardSpawner: {fileID: 420824038}
-  pyramidManager: {fileID: 0}
+  pyramidManager: {fileID: 1287845813}
   deckManager: {fileID: 529032336}
+  cardMovementAnimationSettings:
+    duration: 0.8
+    ease: 19
+    customEase:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    cycles: 1
+    cycleMode: 0
+    startDelay: 0
+    endDelay: 0
+    useUnscaledTime: 0
+    _useFixedUpdate: 0
+    _updateType: 0
 --- !u!4 &589442171
 Transform:
   m_ObjectHideFlags: 0
@@ -565,9 +579,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 529032337}
+  - {fileID: 1287845812}
   - {fileID: 2102011204}
   - {fileID: 420824039}
-  - {fileID: 1287845812}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -601,7 +615,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 589442171}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1287845813
 MonoBehaviour:
@@ -615,7 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c70239153138cf4c8cc1e0bbfde6701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pyramidBuilder: {fileID: 0}
+  pyramidBuilder: {fileID: 2102011203}
 --- !u!1 &1362125505
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,5 +888,5 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 589442171}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -1,42 +1,68 @@
-using MEC;
-using System.Collections;
-using System.Collections.Generic;
-using TriPeakSolitaire.Cards;
-using TriPeakSolitaire.Gameplay;
-using UnityEngine;
 
-public class PyramidCardsManager : MonoBehaviour
+
+namespace TriPeakSolitaire.Gameplay
 {
-    [SerializeField] private PyramidBuilder pyramidBuilder;
-    private List<CardController> pyramidCards;
-    public void SetupPyramid(List<CardController> _pyramidCards)
-    {
-        pyramidCards = _pyramidCards;
-        pyramidBuilder.BuildPyramid(pyramidCards);
+    using MEC;
+    using System.Collections.Generic;
+    using TriPeakSolitaire.Cards;
+    using UnityEngine;
 
-        foreach(CardController card in pyramidCards)
+    public class PyramidCardsManager : MonoBehaviour
+    {
+        [SerializeField] private PyramidBuilder pyramidBuilder;
+        private List<CardController> pyramidCards;
+
+        public int numberOfCardsInPyramid
         {
-            card.onCardClicked += OnCardClicked;
+            get
+            {
+                if (pyramidCards == null) return 0;
+                else return pyramidCards.Count;
+            }
         }
-    }
 
-    private void OnCardClicked(CardController cardToCheck)
-    {
-        GameManager.Instance.CheckCardFromPyramidToWaste(cardToCheck);
-
-    }
-
-    public IEnumerator<float> WaitToUpdateOtherCards(CardController card)
-    {
-        yield return Timing.WaitForSeconds(0.5f);
-        card.UpdateCardsThisBlocks();
-    }
-
-    private void OnDisable()
-    {
-        foreach (CardController card in pyramidCards)
+        public void SetupPyramid(List<CardController> _pyramidCards)
         {
-            card.onCardClicked -= OnCardClicked;
+            pyramidCards = _pyramidCards;
+            pyramidBuilder.BuildPyramid(pyramidCards);
+
+            foreach (CardController card in pyramidCards)
+            {
+                card.onCardClicked += OnCardClicked;
+            }
+        }
+
+        private void OnCardClicked(CardController cardToCheck)
+        {
+            GameManager.Instance.CheckCardFromPyramidToWaste(cardToCheck);
+
+        }
+
+        public IEnumerator<float> WaitToUpdateOtherCards(CardController card)
+        {
+            yield return Timing.WaitForSeconds(0.5f);
+            card.UpdateCardsThisBlocks();
+            pyramidCards.Remove(card);
+        }
+
+        public List<CardController> GetFaceUpCardsInPyramid()
+        {
+            List<CardController> faceUpCards = new List<CardController>();
+            foreach(CardController card in pyramidCards)
+            {
+                if (card.cardModel.IsPlayable) faceUpCards.Add(card);
+            }
+
+            return faceUpCards;
+        }
+
+
+        private void OnDisable()
+        {
+            foreach (CardController card in pyramidCards)
+            {
+                card.onCardClicked -= OnCardClicked;
+            }
         }
     }
 }

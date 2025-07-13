@@ -3,9 +3,8 @@ namespace TriPeakSolitaire.Gameplay
     using MEC;
     using PrimeTween;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Runtime.CompilerServices;
     using TriPeakSolitaire.Cards;
     using UnityEngine;
 
@@ -53,7 +52,7 @@ namespace TriPeakSolitaire.Gameplay
             if(AreAdjacent(wasteCardValue, pyramidCardValue))
             {
                 MoveCardFromPyramidToWastePile(pyramidCard);
-                Timing.RunCoroutine(pyramidManager.WaitToUpdateOtherCards(pyramidCard));
+                Timing.RunCoroutine(pyramidManager.WaitToUpdateOtherCards(pyramidCard).CancelWith(gameObject));
             }
         }
 
@@ -61,6 +60,7 @@ namespace TriPeakSolitaire.Gameplay
         {
             deckManager.AddCardToWastePileFromPyramid(pyramidCard);
             Tween.Position(pyramidCard.cardView.transform, deckManager.wastePilePosition, cardMovementAnimationSettings).OnComplete(() => {
+                EvaluateGameState();
                 pyramidCard.onCardClicked = null;
             });
         }
@@ -72,5 +72,42 @@ namespace TriPeakSolitaire.Gameplay
             // Direct neighbor OR Ace–King wraparound
             return diff == 1 || (value1 == 1 && value2 == 13) || (value1 == 13 && value2 == 1);
         }
+
+        public void EvaluateGameState()
+        {
+            Timing.RunCoroutine(WaitToCheckGameState().CancelWith(gameObject));
+        }
+
+        private IEnumerator<float> WaitToCheckGameState()
+        {
+            yield return Timing.WaitForSeconds(0.5f);
+            CheckForWin();
+            CheckForLoss();
+        }
+
+        private void CheckForWin()
+        {
+            if(pyramidManager.numberOfCardsInPyramid == 0)
+            {
+                Debug.Log("Game Won!!!");
+            }
+        }
+
+        private void CheckForLoss()
+        {
+            if (deckManager.numberOfCardsInDeck > 0) return;
+
+            List<CardController> faceUpCards = pyramidManager.GetFaceUpCardsInPyramid();
+            CardController wastePileCard = deckManager.GetCardInWastePile();
+
+            foreach (CardController pyramidCard in faceUpCards)
+            {
+                if (AreAdjacent(pyramidCard.cardValue, wastePileCard.cardValue)) return;
+            }
+
+
+            Debug.Log("Game Over!!!");
+        }
+
     }
 }

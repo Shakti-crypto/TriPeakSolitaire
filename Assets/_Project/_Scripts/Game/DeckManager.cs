@@ -1,7 +1,9 @@
 using PrimeTween;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using TriPeakSolitaire.Cards;
+using TriPeakSolitaire.Gameplay;
 using UnityEngine;
 
 public class DeckManager : MonoBehaviour
@@ -9,6 +11,18 @@ public class DeckManager : MonoBehaviour
     [SerializeField] private Transform deckPileTransform;
     [SerializeField] private Transform wastePileTransform;
     [SerializeField] private TweenSettings moveAnimationSettings;
+    private Stack<CardController> deckPile;
+    private Stack<CardController> wastePile = new Stack<CardController>();
+
+    public int numberOfCardsInDeck
+    {
+        get
+        {
+            if (deckPile == null) return 0;
+            else return deckPile.Count;
+        }
+    }
+
     public Vector3 wastePilePosition
     {
         get
@@ -18,8 +32,6 @@ public class DeckManager : MonoBehaviour
             return wastePileCardPosition;
         }
     }
-    private Stack<CardController> deckPile;
-    private Stack<CardController> wastePile = new Stack<CardController>();
 
     public void SetupDeckCards(List<CardController> deckCards)
     {
@@ -68,6 +80,7 @@ public class DeckManager : MonoBehaviour
         Tween.Position(cardOnTop.cardView.transform, wastePilePosition, moveAnimationSettings).OnComplete(() =>
         {
             wastePile.Peek().SetCardFaceUp();
+            GameManager.Instance.EvaluateGameState();
         });
     }
 

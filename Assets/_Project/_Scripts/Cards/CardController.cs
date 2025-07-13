@@ -7,7 +7,7 @@ namespace TriPeakSolitaire.Cards
 
     public class CardController
     {
-        private CardModel cardModel;
+        public CardModel cardModel;
         public CardView cardView;
         private List<CardController> cardsThisBlocks;
         public Action<CardController> onCardClicked;
