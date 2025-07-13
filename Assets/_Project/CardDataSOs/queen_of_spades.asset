@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec315dbcfa465f41bee07accefb2486, type: 3}
+  m_Name: queen_of_spades
+  m_EditorClassIdentifier: 
+  cardName: queen_of_spades
+  value: 12
+  frontSprite: {fileID: 21300000, guid: b744fab14f026eb408a60b42eb3aeba7, type: 3}
