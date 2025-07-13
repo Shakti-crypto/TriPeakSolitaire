@@ -4,12 +4,11 @@ namespace TriPeakSolitaire.Cards
 
     public class CardModel
     {
-        private CardData cardData;
+        public CardData cardData;
         private int blockersRemaining;
-        public bool isFaceUp;
 
         public Sprite cardSprite => cardData.frontSprite;
-        public bool IsPlayable => isFaceUp && blockersRemaining == 0;
+        public bool IsPlayable => blockersRemaining == 0;
 
         public CardModel(CardData _cardData)
         {
@@ -19,6 +18,11 @@ namespace TriPeakSolitaire.Cards
         public void RemoveBlocker()
         {
             blockersRemaining = Mathf.Max(0, blockersRemaining - 1);
+        }
+
+        public void AddBlocker(int numberOfBlockers)
+        {
+            blockersRemaining += numberOfBlockers;
         }
 
     }

@@ -9,9 +9,6 @@ namespace TriPeakSolitaire.Gameplay
         [SerializeField] private CardData[] cardDatas;
         [SerializeField] private GameObject cardPrefab;
         [SerializeField] private Transform cardSpawnParent;
-        [SerializeField] private PyramidBuilder pyramidBuilder;
-        [SerializeField]int cardsRequiredForPyramid = 6;
-
 
         public CardController[] SpawnCards()
         {

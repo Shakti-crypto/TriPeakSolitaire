@@ -9,20 +9,46 @@ public class DeckManager : MonoBehaviour
     [SerializeField] private Transform deckPileTransform;
     [SerializeField] private Transform wastePileTransform;
     [SerializeField] private TweenSettings moveAnimationSettings;
+    public Vector3 wastePilePosition
+    {
+        get
+        {
+            Vector3 wastePileCardPosition = wastePileTransform.position;
+            wastePileCardPosition.z = -wastePile.Count * 0.1f;
+            return wastePileCardPosition;
+        }
+    }
     private Stack<CardController> deckPile;
-    private List<CardController> wastePile;
+    private Stack<CardController> wastePile = new Stack<CardController>();
 
     public void SetupDeckCards(List<CardController> deckCards)
     {
         deckPile = new Stack<CardController>(deckCards);
-        int cardIndex=0;
-        foreach(CardController cardController in deckCards)
+        wastePile = new Stack<CardController>(deckCards);
+        int cardIndex = 0;
+        foreach (CardController cardController in deckCards)
         {
+            cardController.onCardClicked += OnCardClicked;
+
             CardView cardView = cardController.cardView;
             Vector3 cardPosition = deckPileTransform.position;
             cardPosition.z -= cardIndex * 0.1f;
             cardView.SetCardPosition(cardPosition);
         }
+
+        MoveCardFromDeckToWastePile();
+    }
+
+    private void OnCardClicked(CardController card)
+    {
+        MoveCardFromDeckToWastePile();
+    }
+
+    public CardController GetCardInWastePile()
+    {
+        if (wastePile == null) return null;
+
+        return wastePile.Peek();
     }
 
     public void MoveCardFromDeckToWastePile()
@@ -33,10 +59,28 @@ public class DeckManager : MonoBehaviour
             return;
         }
 
-        CardController cardOnTop =  deckPile.Pop();
+        CardController cardOnTop = deckPile.Pop();
+        wastePile.Push(cardOnTop);
 
-        Tween.Position(cardOnTop.cardView.transform, wastePileTransform.position, moveAnimationSettings).OnComplete(() => { wastePile.Add(cardOnTop); });
+        cardOnTop.onCardClicked -= OnCardClicked;
+        cardOnTop.onCardClicked = null;
+
+        Tween.Position(cardOnTop.cardView.transform, wastePilePosition, moveAnimationSettings).OnComplete(() =>
+        {
+            wastePile.Peek().SetCardFaceUp();
+        });
     }
 
+    public void AddCardToWastePileFromPyramid(CardController card)
+    {
+        wastePile.Push(card);
+    }
 
+    private void OnDisable()
+    {
+        foreach (CardController card in deckPile)
+        {
+            card.onCardClicked -= OnCardClicked;
+        }
+    }
 }
