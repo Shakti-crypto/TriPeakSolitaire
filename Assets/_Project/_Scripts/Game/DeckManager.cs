@@ -54,6 +54,7 @@ public class DeckManager : MonoBehaviour
     private void OnCardClicked(CardController card)
     {
         MoveCardFromDeckToWastePile();
+        GameManager.Instance.IncreaesMoves();
     }
 
     public CardController GetCardInWastePile()

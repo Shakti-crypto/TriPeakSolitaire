@@ -10,13 +10,23 @@ namespace TriPeakSolitaire.Gameplay
 
     public class GameManager : Singleton<GameManager>
     {
+        #region Variables
         [SerializeField] private CardSpawner cardSpawner;
         [SerializeField] private PyramidCardsManager pyramidManager;
         [SerializeField] private DeckManager deckManager;
+        [SerializeField] private GameTimer gameTimer;
         [SerializeField] private TweenSettings cardMovementAnimationSettings;
         private CardController[] cardControllers;
         private List<CardController> pyramidCards;
         private List<CardController> deckCardPile;
+        public int MovesMade { get; private set; }
+        #endregion
+
+        #region Events
+        public static Action<int> onMoveMade;
+        public static Action<TimeData, int> onGameWon;
+        public static Action onGameOver;
+        #endregion
 
         private void Start()
         {
@@ -41,6 +51,7 @@ namespace TriPeakSolitaire.Gameplay
 
             pyramidManager.SetupPyramid(pyramidCards);
             deckManager.SetupDeckCards(deckCardPile);
+            gameTimer.Start();
         }
 
         public void CheckCardFromPyramidToWaste(CardController pyramidCard)
@@ -59,6 +70,7 @@ namespace TriPeakSolitaire.Gameplay
         private void MoveCardFromPyramidToWastePile(CardController pyramidCard)
         {
             deckManager.AddCardToWastePileFromPyramid(pyramidCard);
+            IncreaesMoves();
             Tween.Position(pyramidCard.cardView.transform, deckManager.wastePilePosition, cardMovementAnimationSettings).OnComplete(() => {
                 EvaluateGameState();
                 pyramidCard.onCardClicked = null;
@@ -71,6 +83,12 @@ namespace TriPeakSolitaire.Gameplay
 
             // Direct neighbor OR Ace–King wraparound
             return diff == 1 || (value1 == 1 && value2 == 13) || (value1 == 13 && value2 == 1);
+        }
+
+        public void IncreaesMoves()
+        {
+            MovesMade ++;
+            onMoveMade?.Invoke(MovesMade);
         }
 
         public void EvaluateGameState()
@@ -89,7 +107,8 @@ namespace TriPeakSolitaire.Gameplay
         {
             if(pyramidManager.numberOfCardsInPyramid == 0)
             {
-                Debug.Log("Game Won!!!");
+                gameTimer.Stop();
+                onGameWon?.Invoke(gameTimer.GetTime(), MovesMade);
             }
         }
 
@@ -105,8 +124,8 @@ namespace TriPeakSolitaire.Gameplay
                 if (AreAdjacent(pyramidCard.cardValue, wastePileCard.cardValue)) return;
             }
 
-
-            Debug.Log("Game Over!!!");
+            gameTimer.Stop();
+            onGameOver?.Invoke();
         }
 
     }
