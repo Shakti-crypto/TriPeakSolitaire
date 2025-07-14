@@ -5,6 +5,10 @@ namespace TriPeakSolitaire.Tools
     using UnityEditor;
     using System.IO;
 
+    /// <summary>
+    /// A custom Unity Editor window used to batch-create CardData assets
+    /// from a folder of sprites. Simplifies the card creation pipeline during development.
+    /// </summary>
     public class CardDataCreatorWindow : EditorWindow
     {
         private DefaultAsset spriteFolder;

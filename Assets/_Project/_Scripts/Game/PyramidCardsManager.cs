@@ -1,5 +1,4 @@
 
-
 namespace TriPeakSolitaire.Gameplay
 {
     using MEC;
@@ -7,6 +6,10 @@ namespace TriPeakSolitaire.Gameplay
     using TriPeakSolitaire.Cards;
     using UnityEngine;
 
+    /// <summary>
+    /// Tracks all cards in the pyramid during gameplay. Provides utility methods
+    /// to query face-up or remaining cards, used for win/loss evaluations.
+    /// </summary>
     public class PyramidCardsManager : MonoBehaviour
     {
         [SerializeField] private PyramidBuilder pyramidBuilder;
@@ -45,6 +48,9 @@ namespace TriPeakSolitaire.Gameplay
             pyramidCards.Remove(card);
         }
 
+        /// <summary>
+        /// Used in GameManager to evaluate winning condition
+        /// </summary>
         public List<CardController> GetFaceUpCardsInPyramid()
         {
             List<CardController> faceUpCards = new List<CardController>();

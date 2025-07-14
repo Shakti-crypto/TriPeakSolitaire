@@ -1,9 +1,12 @@
 namespace TriPeakSolitaire.Cards
 {
+    using TriPeakSolitaire.Gameplay;
     using UnityEngine;
-    using UnityEngine.Events;
-    using UnityEngine.UI;
 
+    /// <summary>
+    /// Handles the gameobject representation of a card. Updates visuals (sprites, interactivity)
+    /// based on the model's state. 
+    /// </summary>
     public class CardView : MonoBehaviour
     {
         public Transform cardRect;
@@ -26,6 +29,7 @@ namespace TriPeakSolitaire.Cards
             cardRect.position = position;
         }
 
+        //Used to calculate pyramid cards position
         public float GetSpriteWidth()
         {
             float spriteWidthInUnits = cardSprite.sprite.bounds.size.x;
@@ -35,6 +39,7 @@ namespace TriPeakSolitaire.Cards
 
         private void OnMouseDown()
         {
+            if (!GameManager.Instance.allowInput) return;
             controller.OnCardClicked();
         }
 

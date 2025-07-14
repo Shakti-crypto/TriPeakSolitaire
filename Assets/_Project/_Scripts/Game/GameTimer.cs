@@ -1,8 +1,6 @@
-using TMPro;
-using UnityEngine;
-
 namespace TriPeakSolitaire.Gameplay
 {
+    using UnityEngine;
     public class GameTimer : MonoBehaviour
     {
         public float ElapsedTime { get; private set; }

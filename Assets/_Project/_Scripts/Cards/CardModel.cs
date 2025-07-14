@@ -2,6 +2,10 @@ namespace TriPeakSolitaire.Cards
 {
     using UnityEngine;
 
+    /// <summary>
+    /// Represents the logic and runtime state of a card
+    /// Handles the data regarding the cards that block this current card
+    /// </summary>
     public class CardModel
     {
         public CardData cardData;

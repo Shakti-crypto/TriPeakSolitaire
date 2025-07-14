@@ -1,15 +1,30 @@
 namespace TriPeakSolitaire.Cards
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using UnityEngine;
 
+    /// <summary>
+    /// Acts as the Controller in the MVC architecture for a card.
+    /// Connects the CardModel (data) and CardView (UI), listens for model updates,
+    /// and modifies the view accordingly. Handles card interaction logic.
+    /// </summary>
     public class CardController
     {
         public CardModel cardModel;
         public CardView cardView;
+
+        /// <summary>
+        /// This list stores the cards blocked by the current card.
+        /// The cards above the current card will be updated through this list,
+        /// when the current card is moved to the waste pile
+        /// </summary>
         private List<CardController> cardsThisBlocks;
+
+        /// <summary>
+        /// Store the event based on the card position.
+        /// Pyramid cards and deck cards will have different events, called 
+        /// by their respective managers
+        /// </summary>
         public Action<CardController> onCardClicked;
         public int cardValue => cardModel.cardData.value;
 
@@ -33,6 +48,8 @@ namespace TriPeakSolitaire.Cards
             cardView.SetupSprite(cardModel.cardSprite, true);
         }
 
+
+        // This function will add cards that are blocked by this current card.
         public void AddCardThisBlocks(CardController cardController)
         {
             cardsThisBlocks.Add(cardController);
